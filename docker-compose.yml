@@ -1,0 +1,33 @@
+services:
+  db:
+    container_name: belajar-laravel-db
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - vol-belajar-laravel:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    container_name: belajar-laravel-phpmyadmin
+    image: phpmyadmin:latest
+    environment:
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+  dasar:
+    container_name: belajar-laravel-dasar
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    image: "belajar-laravel-app"
+    ports:
+      - 9000:80
+    volumes:
+      - ./dasar:/var/www/html
+volumes:
+  vol-belajar-laravel:
+    name: vol-belajar-laravel
